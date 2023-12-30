@@ -1,3 +1,12 @@
+function exportImage() {
+    const dataUrl = fakeCanvas.toDataURL("image/png");
+    const link = document.createElement('a');
+    link.download = "wfc-input.png";
+    link.href = dataUrl.replace("image/png", "image/octet-stream");
+    console.log(link);
+    link.click();
+}
+
 function imgInToImg(imgIn) {
     return {
         mat: imgIn,
@@ -63,23 +72,29 @@ function canvasToImgIn(canvas) {
     return hexArray;
 }
 
+function loadImage(in_image) {
+    const image = new Image();
+    image.src = in_image.src;
+    image.onload = () => {
+        const canvas = document.getElementById('input_canvas');
+        const ctx = canvas.getContext('2d');
+        fakeCanvas.width = canvas.width = image.width;
+        fakeCanvas.height = canvas.height = image.height;
+        ctx.drawImage(image, 0, 0, image.width, image.height);
+        fakeCanvas.getContext('2d').drawImage(canvas, 0, 0, image.width, image.height);
+        imgIn = canvasToImgIn(canvas);
+        update(true);
+    };
+}
+
 function handleImage() {
     const input = document.getElementById('imageInput');
-
-    const canvas = document.getElementById('input_canvas');
-    const ctx = canvas.getContext('2d');
-
     const image = new Image();
     const reader = new FileReader();
 
     reader.onload = function (e) {
         image.onload = function () {
-            fakeCanvas.width = canvas.width = image.width;
-            fakeCanvas.height = canvas.height = image.height;
-            ctx.drawImage(image, 0, 0, image.width, image.height);
-            fakeCanvas.getContext('2d').drawImage(canvas, 0, 0, image.width, image.height);
-            imgIn = canvasToImgIn(canvas);
-            update(true);
+            loadImage(image);
         };
 
         image.src = e.target.result;

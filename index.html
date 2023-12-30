@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <script src="filemap.js"></script>
     <script src="utils.js"></script>
     <script src="algos/common.js"></script>
     <script src="algos/preprocessor.js"></script>
@@ -13,13 +14,36 @@
         #input_canvas:hover {
             cursor: crosshair;
         }
+
+        div.scroll-container {
+            background-color: #333;
+            overflow: auto;
+            white-space: nowrap;
+            padding: 10px;
+        }
+
+        div.scroll-container img {
+            padding: 10px;
+            min-height: 100px;
+        }
+
+        div.scroll-container img:hover {
+            cursor: pointer;   
+        }
     </style>
 </head>
 
 <body>
-    INPUT IMG (pick something small &lt; 100x100 px): <input type="file" id="imageInput" accept="image/*"
-        onchange="handleImage()"> <br />
-    PREVIEW_PAINT_EVERY_NTH_ITERATION: <input id="update_preview_nth" type="number" oninput="preview()" /><br />
+    <h1>Select an image Or load your own ...</h1> <input type="file" id="imageInput" accept="image/*" onchange="handleImage()">
+    (recommended up to 100 x 100 px)
+    <div class="scroll-container" id="scroll-container">
+        <script>
+            for (const [fn, fp] of Object.entries(FILE_MAP)) {
+                document.writeln(`<img src="${fp}" alt="${fn}" onclick="loadImage(this)">`);
+            }
+        </script>
+    </div>
+    PREVIEW_PAINT_EVERY_NTH_ITERATION: <input id="update_preview_nth" type="number" oninput="preview()" /> (10k or more for faster result)<br />
     SCAN_INPUT_WINDOW_SIZE: <input id="input_window_size" type="number" value="4" oninput="update()" /><br />
     OUT_WINDOWS_WIDTH_COUNT: <input oninput="preview()" id="out_window_width_size" type="number" value="8" /> <br />
     OUT_WINDOWS_HEIGHT_COUNT: <input oninput="preview()" id="out_window_height_size" type="number" value="8" /><br />
@@ -40,7 +64,7 @@
     WEIGHTED_TILES <input type="checkbox" id="weighted_checkbox" checked />
     <button id="run_btn" onclick="run()">RUN</button>
     <hr />
-    Loaded image: <br />
+    Loaded image: <button onclick="exportImage()">export</button><br />
     <canvas id="input_canvas" style="border: 1px solid black;"></canvas>
     <br />
     color: <input type="color" id="colorpicker" onchange="newColorPicked(this.value)" value="#000000">
