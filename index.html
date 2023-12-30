@@ -1,0 +1,62 @@
+<html>
+
+<head>
+    <script src="utils.js"></script>
+    <script src="algos/common.js"></script>
+    <script src="algos/preprocessor.js"></script>
+    <script src="algos/wfc-naive.js"></script>
+    <script src="algos/wfc-greedy-stack.js"></script>
+    <script src="algos/wfc-greedy-recursive.js"></script>
+    <script src="algos/wfc.js"></script>
+    <script src="index.js"></script>
+    <style>
+        #input_canvas:hover {
+            cursor: crosshair;
+        }
+    </style>
+</head>
+
+<body>
+    INPUT IMG (pick something small &lt; 100x100 px): <input type="file" id="imageInput" accept="image/*"
+        onchange="handleImage()"> <br />
+    PREVIEW_PAINT_EVERY_NTH_ITERATION: <input id="update_preview_nth" type="number" oninput="preview()" /><br />
+    SCAN_INPUT_WINDOW_SIZE: <input id="input_window_size" type="number" value="4" oninput="update()" /><br />
+    OUT_WINDOWS_WIDTH_COUNT: <input oninput="preview()" id="out_window_width_size" type="number" value="8" /> <br />
+    OUT_WINDOWS_HEIGHT_COUNT: <input oninput="preview()" id="out_window_height_size" type="number" value="8" /><br />
+    PREVIEW_SCALE: <input id="preview_scale" type="number" value="10" oninput="preview()" /><br />
+    <br>
+    ALGORITHM:
+    <select id="algo_selection" oninput="preview()">
+        <option value="lineScan">Line scan per row</option>
+        <option value="lineScanGreed">Line scan per row greedy</option>
+        <option value="lineSnakeScan">Snake scan per row</option>
+        <option value="lineSnakeScanGreed">Snake scan per row greedy</option>
+        <option value="neighborRecurse">Min neighbor recursive</option>
+        <option value="neighborIter">Min neighbor iterative (same logic as above, just no recursion)</option>
+        <option value="fullyDeductiveNeighbor">fully deductive min neighbor recursive</option>
+        <option value="fullyDeductiveNeighborPaintPredictions" selected>fully deductive min neighbor recursive (paint
+            predictions)</option>
+    </select>
+    WEIGHTED_TILES <input type="checkbox" id="weighted_checkbox" checked />
+    <button id="run_btn" onclick="run()">RUN</button>
+    <hr />
+    Loaded image: <br />
+    <canvas id="input_canvas" style="border: 1px solid black;"></canvas>
+    <br />
+    color: <input type="color" id="colorpicker" onchange="newColorPicked(this.value)" value="#000000">
+    brush size: <input type="number" id="thickness_input" min="1" max="100" oninput="newThickness(+this.value)" />
+    hover grid lines: <input type="checkbox" id="gridlines_checkbox" checked
+        oninput="showGridLoadedImg = !showGridLoadedImg;" />
+    <button onclick="onNewBlankCanvas()">new blank canvas</button>W:<input id="input_blank_w" type="number" value="20"
+        min="3" max="100"></input>
+    H:<input id="input_blank_h" type="number" value="20" min="3" max="100"></input><br>
+    <hr />
+    Algorithm image: <br />
+    <canvas id="disp_canvas" style="border: 1px solid black;"></canvas>
+    <hr />
+    Algorithm tile scan: <br />
+    <canvas id="aug_canvas" style="border: 1px solid black;"></canvas>
+    <script>main()</script>
+</body>
+
+</html>
