@@ -25,7 +25,7 @@ async function paintIterativeProbabilityPatternFullyDeductive({ windows }, { W, 
 }
 
 async function paintIterativeProbabilityPatternFullyDeductivePaintPredictions({ windows }, { W, H }, USE_WEIGHTED_PICK = true) {
-    return wfc_paintIterativeProbabilityPatternFullyDeductive({ windows }, { W, H }, USE_WEIGHTED_PICK, true);
+    return wfc_render_after({ windows }, { W, H }, USE_WEIGHTED_PICK, true);
 }
 
 async function paintIterativeSnakeLinePattern({ windows }, { W, H }, WEIGHTED_PICK) {
